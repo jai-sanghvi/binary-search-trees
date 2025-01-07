@@ -175,16 +175,106 @@ class Tree {
     let currentNode = this.root;
 
     while (true) {
+      if (currentNode === null) return null;
       if (currentNode.data === value) return currentNode;
 
       if (value < currentNode.data) {
-        if (currentNode.left === null) return null;
         currentNode = currentNode.left;
       } else {
-        if (currentNode.right === null) return null;
         currentNode = currentNode.right;
       }
     }
+  }
+
+  levelOrderIteration(callback) {
+    if (callback === undefined) throw new Error("A callback function is required");
+    if (this.root === null) throw new Error("Tree is empty");
+
+    let queue = [this.root];
+
+    while (queue.length > 0) {
+      let currentNode = queue.shift();
+
+      callback(currentNode);
+
+      if (currentNode.left !== null) queue.push(currentNode.left);
+      if (currentNode.right !== null) queue.push(currentNode.right);
+    }
+
+  }
+
+  levelOrderRecursion(callback) {
+    if (callback === undefined) throw new Error("A callback function is required");
+
+    if (this.root === null) return;
+
+    let queue = [this.root];
+
+    function traverseTree(node) {
+      callback(node);
+      if (node.left !== null) queue.push(node.left);
+      if (node.right !== null) queue.push(node.right);
+
+      if (queue.length < 1) return;
+      traverseTree(queue.shift());
+    }
+
+    traverseTree( queue.shift() );
+  }
+
+  preOrder(callback) {
+    if (callback === undefined) throw new Error("A callback function is required");
+
+    function traverseTree(root) {
+      if (root === null) return;
+
+      callback(root);
+      traverseTree(root.left);
+      traverseTree(root.right);
+    }
+
+    traverseTree(this.root);
+  }
+
+  inOrder(callback) {
+    if (callback === undefined) throw new Error("A callback function is required");
+
+    function traverseTree(root) {
+      if (root === null) return;
+
+      traverseTree(root.left);
+      callback(root);
+      traverseTree(root.right);
+    }
+
+    traverseTree(this.root);
+  }
+
+  postOrder(callback) {
+    if (callback === undefined) throw new Error("A callback function is required");
+
+    function traverseTree(root) {
+      if (root === null) return;
+
+      traverseTree(root.left);
+      traverseTree(root.right);
+      callback(root);
+    }
+
+    traverseTree(this.root);
+  }
+
+  height(node) {
+    if (node === null) return 0;
+
+    const leftHeight = (node.left === null) ? 0 : (1 + this.height(node.left));
+    const rightHeight = (node.right === null) ? 0 : (1 + this.height(node.right));
+
+    return (leftHeight > rightHeight) ? leftHeight : rightHeight;
+  }
+
+  depth(node) {
+    
   }
 }
 
@@ -215,7 +305,6 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+let tree = new Tree([1]);
 prettyPrint(tree.root);
-tree.deleteItem(8);
-prettyPrint(tree.root);
+console.log( tree.height(tree.root) );

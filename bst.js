@@ -274,8 +274,25 @@ class Tree {
   }
 
   depth(node) {
-    
+    if (this.find(node) === null) throw new Error("Node not found");
+
+    let currentNode = this.root;
+    let depth = 0;
+
+    while (currentNode.data !== node) {
+
+      if (node < currentNode.data) {
+        currentNode = currentNode.left;
+      } else {
+        currentNode = currentNode.right;
+      }
+
+      depth++;
+    }
+
+    return depth;
   }
+  
 }
 
 function buildTree(arr) {
@@ -305,6 +322,6 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-let tree = new Tree([1]);
+let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 prettyPrint(tree.root);
-console.log( tree.height(tree.root) );
+console.log( tree.depth(5) );

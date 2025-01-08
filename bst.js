@@ -1,12 +1,6 @@
-class Node {
-  constructor(data) {
-      this.data = data;
-      this.left = null;
-      this.right = null;
-  }
-}
+import { Node } from './node.js';
 
-class Tree {
+export class Tree {
   constructor(arr) {
     let modifiedArr = [];
     let sortedArr = arr.sort( (a,b) => a - b );
@@ -18,7 +12,21 @@ class Tree {
 
       return false;
     } );
-    this.root = buildTree(modifiedArr);
+    this.root = Tree.buildTree(modifiedArr);
+  }
+
+  static buildTree(arr) {
+    let start = 0;
+    let end = arr.length - 1;
+    if (start > end) return null;
+  
+    let mid = Math.floor( (start + end) / 2 );
+    let root = new Node(arr[mid]);
+  
+    root.left = Tree.buildTree(arr.slice(0, mid));
+    root.right = Tree.buildTree(arr.slice(mid + 1));
+  
+    return root;
   }
 
   insert(value) {
@@ -292,36 +300,23 @@ class Tree {
 
     return depth;
   }
-  
+
+  isBalanced() {
+    let isBalanced = true;
+
+    this.preOrder((root) => {
+      const leftHeight = this.height(root.left);
+      const rightHeight = this.height(root.right);
+
+      const heightDifference = leftHeight - rightHeight;
+
+
+      if ( (heightDifference < -1) || (heightDifference > 1) ) {
+        isBalanced = false;
+      }
+    })
+
+    return isBalanced;
+  }
+
 }
-
-function buildTree(arr) {
-  let start = 0;
-  let end = arr.length - 1;
-  if (start > end) return null;
-
-  let mid = Math.floor( (start + end) / 2 );
-  let root = new Node(arr[mid]);
-
-  root.left = buildTree(arr.slice(0, mid));
-  root.right = buildTree(arr.slice(mid + 1));
-
-  return root;
-}
-
-const prettyPrint = (node, prefix = "", isLeft = true) => {
-  if (node === null) {
-    return;
-  }
-  if (node.right !== null) {
-    prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
-  }
-  console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
-  if (node.left !== null) {
-    prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
-  }
-};
-
-let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-prettyPrint(tree.root);
-console.log( tree.depth(5) );

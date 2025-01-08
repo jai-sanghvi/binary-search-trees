@@ -319,4 +319,10 @@ export class Tree {
     return isBalanced;
   }
 
+  reBalance() {
+    const sortedArray = [];
+    this.inOrder( (root) => sortedArray.push(root.data) );
+    this.root = Tree.buildTree(sortedArray);
+  }
+
 }

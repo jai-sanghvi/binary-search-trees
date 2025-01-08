@@ -19,29 +19,13 @@ prettyPrint(tree.root);
 
 console.log( tree.isBalanced() );
 
-const levelOrderArray = [];
-tree.levelOrderIteration((el) => {
-  levelOrderArray.push(el.data);
-})
-console.log(levelOrderArray);
+printLevelOrderArray();
 
-const preOrderArray = [];
-tree.preOrder((el) => {
-  preOrderArray.push(el.data);
-})
-console.log(preOrderArray);
+printPreOrderArray();
 
-const postOrderArray = [];
-tree.postOrder((el) => {
-  postOrderArray.push(el.data);
-})
-console.log(postOrderArray);
+printPostOrderArray();
 
-const inOrderArray = [];
-tree.inOrder((el) => {
-  inOrderArray.push(el.data);
-})
-console.log(inOrderArray);
+printInOrderArray();
 
 tree.insert(101);
 tree.insert(131);
@@ -51,4 +35,50 @@ tree.insert(191);
 
 console.log( tree.isBalanced() );
 
+tree.reBalance();
+
+console.log( tree.isBalanced() );
+
 prettyPrint(tree.root);
+
+printLevelOrderArray();
+
+printPreOrderArray();
+
+printPostOrderArray();
+
+printInOrderArray();
+
+// FUNCTIONS
+
+function printLevelOrderArray() {
+  const levelOrderArray = [];
+  tree.levelOrderIteration((el) => {
+    levelOrderArray.push(el.data);
+  })
+  console.log(levelOrderArray);
+}
+
+function printPreOrderArray() {
+  const preOrderArray = [];
+  tree.preOrder((el) => {
+    preOrderArray.push(el.data);
+  })
+  console.log(preOrderArray);
+}
+
+function printPostOrderArray() {
+  const postOrderArray = [];
+  tree.postOrder((el) => {
+    postOrderArray.push(el.data);
+  })
+  console.log(postOrderArray);
+}
+
+function printInOrderArray() {
+  const inOrderArray = [];
+  tree.inOrder((el) => {
+    inOrderArray.push(el.data);
+  })
+  console.log(inOrderArray);
+}
